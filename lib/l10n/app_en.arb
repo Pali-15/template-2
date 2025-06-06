@@ -1,0 +1,41 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "My Flutter Template",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+
+  "hello": "Hello",
+  "@hello": {
+    "description": "Simple greeting"
+  },
+
+  "welcomeMessage": "Welcome to our app, {username}!",
+  "@welcomeMessage": {
+    "description": "Welcome message with the user's name",
+    "placeholders": {
+      "username": {}
+    }
+  },
+
+  "language": "Language",
+  "@language": {
+    "description": "Label for language selector"
+  },
+
+  "changeLanguage": "Change language",
+  "@changeLanguage": {
+    "description": "Button text to change app language"
+  },
+
+  "ok": "OK",
+  "@ok": {
+    "description": "Confirm button label"
+  },
+
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button label"
+  }
+}

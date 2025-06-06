@@ -1,0 +1,9 @@
+name: bloc
+description: Generates a BLoC with state and event
+version: 0.1.0+1
+environment:
+  mason: ^0.1.1
+vars:
+  bloc_name:
+    type: string
+    description: The name of the bloc (e.g. employee)

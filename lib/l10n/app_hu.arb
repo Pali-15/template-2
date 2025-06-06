@@ -1,0 +1,41 @@
+{
+  "@@locale": "hu",
+
+  "appTitle": "A Flutter sablon",
+  "@appTitle": {
+    "description": "Az alkalmazás címe"
+  },
+
+  "hello": "Szia",
+  "@hello": {
+    "description": "Egyszerű üdvözlés"
+  },
+
+  "welcomeMessage": "Üdvözlünk az alkalmazásban, {username}!",
+  "@welcomeMessage": {
+    "description": "Üdvözlő üzenet a felhasználó nevével",
+    "placeholders": {
+      "username": {}
+    }
+  },
+
+  "language": "Nyelv",
+  "@language": {
+    "description": "Nyelvválasztó címke"
+  },
+
+  "changeLanguage": "Nyelv megváltoztatása",
+  "@changeLanguage": {
+    "description": "Gomb szöveg a nyelv megváltoztatásához"
+  },
+
+  "ok": "Rendben",
+  "@ok": {
+    "description": "Megerősítő gomb felirat"
+  },
+
+  "cancel": "Mégse",
+  "@cancel": {
+    "description": "Mégse gomb felirat"
+  }
+}

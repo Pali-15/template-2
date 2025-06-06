@@ -1,0 +1,13 @@
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+# this should be sync with android/app/src/main/res/xml/locales_config.xml
+# and resourceConfigurations in android/app/build.gradle
+# and on iOS with "knownRegions" in the Xcode project
+preferred-supported-locales:
+  - 'en'
+  - 'hu'
+nullable-getter: false
+output-class: AppI18N
+synthetic-package: false
+format: true
