@@ -18,30 +18,50 @@ class BasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colors.background,
-      appBar:
-          (!enableBackButton && title == null)
-              ? null
-              : AppBar(
-                title:
-                    title == null
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final num scaledWidth = 600;
+        final double width =
+            scaledWidth.clamp(0.0, constraints.maxWidth).toDouble();
+        return Container(
+          color: context.colors.background,
+          child: Center(
+            child: SizedBox(
+              width: width,
+              child: Scaffold(
+                backgroundColor: context.colors.background,
+                appBar:
+                    (!enableBackButton && title == null)
                         ? null
-                        : Text(title!, style: context.textStyles.headline),
-                leading:
-                    enableBackButton
-                        ? IconButton(
-                          onPressed: () => context.pop(),
-                          icon: Icon(Icons.arrow_back),
-                        )
-                        : null,
+                        : AppBar(
+                          backgroundColor: context.colors.background,
+                          elevation: 0,
+                          title:
+                              title == null
+                                  ? null
+                                  : Text(
+                                    title!,
+                                    style: context.textStyles.headline,
+                                  ),
+                          leading:
+                              enableBackButton
+                                  ? IconButton(
+                                    onPressed: () => context.pop(),
+                                    icon: const Icon(Icons.arrow_back),
+                                  )
+                                  : null,
+                        ),
+                body: SafeArea(
+                  child: Padding(
+                    padding: padding ?? AppSpacing.m.insetsAll,
+                    child: children,
+                  ),
+                ),
               ),
-      body: SafeArea(
-        child: Padding(
-          padding: padding ?? AppSpacing.m.insetsAll,
-          child: children,
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
