@@ -60,12 +60,11 @@ import 'package:template/core/design/theme/theme.dart';
 import 'package:template/core/design/theme/theme_cubit.dart';
 import 'package:template/core/l10n/app_localizations.dart';
 import 'package:template/core/l10n/locale_cubit.dart';
-import 'package:template/core/router/router.dart';
+import 'package:template/core/router/app_router.dart';
 
 class TemplateApp extends HookWidget {
-  TemplateApp({super.key});
-  // Add to di
-  final AppRouter router = AppRouter();
+  final AppRouter router;
+  const TemplateApp({super.key, required this.router});
 
   @override
   Widget build(BuildContext context) {

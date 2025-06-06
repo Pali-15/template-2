@@ -1,40 +1,14 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:template/app/screens/page_1/page_1.dart';
-import 'package:template/app/screens/page_1/page_1_nested/bloc/bloc.dart';
-import 'package:template/app/screens/page_1/page_1_nested/page_1_nested.dart';
-import 'package:template/app/screens/page_2/page_2.dart';
+import 'package:template/core/router/routes.dart';
 
-part 'app_routes.g.dart';
+class AppRoute<ReturnType> {
+  static const QUERY_INPUT_KEY = 'app-route-input';
 
-// Root: /page1
-@TypedGoRoute<Page1Route>(
-  path: '/page1',
-  routes: [TypedGoRoute<Page1NestedRoute>(path: 'page1Nested')],
-)
-class Page1Route extends GoRouteData {
-  const Page1Route();
+  final String name;
+  final Map<String, dynamic> queryParameters;
 
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const Page1();
-}
+  const AppRoute._(this.name, {this.queryParameters = const {}});
 
-class Page1NestedRoute extends GoRouteData {
-  const Page1NestedRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => BlocProvider(
-    create: (context) => Page1Bloc()..add(Page1BlocLoad()),
-    child: const Page1Nested(),
-  );
-}
-
-// Root: /page2
-@TypedGoRoute<Page2Route>(path: '/page2')
-class Page2Route extends GoRouteData {
-  const Page2Route();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const Page2();
+  static AppRoute page1Route() => AppRoute._(AppRoutes.page1);
+  static AppRoute page1NestedRoute() => AppRoute._(AppRoutes.page1Nested);
+  static AppRoute page2Route() => AppRoute._(AppRoutes.page2);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:template/core/common_widgets/base_screen.dart';
 import 'package:template/core/common_widgets/buttons.dart';
+import 'package:template/core/extensions/context_extensions/context_router_extensions.dart';
 import 'package:template/core/router/app_routes.dart';
 
 class Page1 extends StatelessWidget {
@@ -15,7 +16,7 @@ class Page1 extends StatelessWidget {
           context: context,
           label: "Go to nested page",
           onPressed: () {
-            Page1NestedRoute().go(context);
+            context.navigate(AppRoute.page1NestedRoute());
           },
         ),
       ),

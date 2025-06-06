@@ -5,6 +5,7 @@ import 'package:template/app/template_app.dart';
 import 'package:template/core/design/theme/theme_cubit.dart';
 import 'package:template/core/di/di_module.dart';
 import 'package:template/core/l10n/locale_cubit.dart';
+import 'package:template/core/router/app_router.dart';
 
 class AppRoot extends StatefulWidget {
   const AppRoot({super.key});
@@ -29,7 +30,7 @@ class _BlocInsertWrapper extends HookWidget {
     // final repositories = useMemoized(_baseRepositories);
     return MultiBlocProvider(
       providers: blocProviders,
-      child: TemplateApp(),
+      child: TemplateApp(router: DiModule.getInstance<AppRouter>()),
       // child: MultiRepositoryProvider(
       //   providers: repositories,
       //   child: TemplateApp(),
