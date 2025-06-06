@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:template/core/design/app_dimensions.dart';
 import 'package:template/core/extensions/context_extensions/context_design_extension.dart';
 
 enum BottomNavigationTab {
@@ -38,9 +39,10 @@ class BottomNavbar extends StatelessWidget {
       canPop: false,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final num scaledWidth = 600;
           final double width =
-              scaledWidth.clamp(0.0, constraints.maxWidth).toDouble();
+              AppDimensions.MAX_SCREEN_WIDTH
+                  .clamp(0.0, constraints.maxWidth)
+                  .toDouble();
           return Container(
             color:
                 context.colors.background, // optional: full-screen background

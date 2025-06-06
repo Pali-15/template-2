@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:template/core/design/app_dimensions.dart';
 import 'package:template/core/design/spacing.dart';
 import 'package:template/core/extensions/context_extensions/context_design_extension.dart';
 
@@ -20,9 +21,10 @@ class BasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final num scaledWidth = 600;
         final double width =
-            scaledWidth.clamp(0.0, constraints.maxWidth).toDouble();
+            AppDimensions.MAX_SCREEN_WIDTH
+                .clamp(0.0, constraints.maxWidth)
+                .toDouble();
         return Container(
           color: context.colors.background,
           child: Center(

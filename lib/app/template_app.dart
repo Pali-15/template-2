@@ -56,6 +56,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:template/core/design/app_dimensions.dart';
 import 'package:template/core/design/theme/theme.dart';
 import 'package:template/core/design/theme/theme_cubit.dart';
 import 'package:template/core/l10n/app_localizations.dart';
@@ -70,7 +71,10 @@ class TemplateApp extends HookWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       ensureScreenSize: true,
-      designSize: const Size(393.0, 852), // iPhone 14 Pro Max
+      designSize: const Size(
+        AppDimensions.DESIGN_WIDTH,
+        AppDimensions.DESIGN_HEIGHT,
+      ),
       minTextAdapt: true,
       child: Builder(
         builder: (context) {
