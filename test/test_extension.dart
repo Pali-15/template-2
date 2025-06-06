@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:template/design/theme/theme_cubit.dart';
-import 'package:template/l10n/locale_cubit.dart';
+import 'package:template/core/design/theme/theme_cubit.dart';
+import 'package:template/core/l10n/locale_cubit.dart';
 
 import 'mocks/bloc_mocks.mocks.dart';
 import 'mocks/router_mocks.mocks.dart';

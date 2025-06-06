@@ -1,7 +1,7 @@
 import 'package:mockito/annotations.dart';
-import 'package:template/design/theme/theme_cubit.dart';
-import 'package:template/l10n/locale_cubit.dart';
-import 'package:template/screens/page_1/page_1_nested/bloc/bloc.dart';
+import 'package:template/core/design/theme/theme_cubit.dart';
+import 'package:template/core/l10n/locale_cubit.dart';
+import 'package:template/app/screens/page_1/page_1_nested/bloc/bloc.dart';
 
 @GenerateNiceMocks([
   MockSpec<LocaleCubit>(),
