@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:template/extensions/locals_extension.dart';
-import 'package:template/l10n/app_localizations.dart';
+import 'package:template/core/extensions/locals_extension.dart';
+import 'package:template/core/l10n/app_localizations.dart';
 
 enum Locales {
   en('en'),

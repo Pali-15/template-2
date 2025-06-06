@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:template/screens/page_1/page_1.dart';
-import 'package:template/screens/page_1/page_1_nested/bloc/bloc.dart';
-import 'package:template/screens/page_1/page_1_nested/page_1_nested.dart';
-import 'package:template/screens/page_2/page_2.dart';
+import 'package:template/app/screens/page_1/page_1.dart';
+import 'package:template/app/screens/page_1/page_1_nested/bloc/bloc.dart';
+import 'package:template/app/screens/page_1/page_1_nested/page_1_nested.dart';
+import 'package:template/app/screens/page_2/page_2.dart';
 
 part 'app_routes.g.dart';
 

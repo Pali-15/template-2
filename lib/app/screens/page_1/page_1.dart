@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:template/common_widgets/base_screen.dart';
-import 'package:template/common_widgets/buttons.dart';
-import 'package:template/router/app_routes.dart';
+import 'package:template/core/common_widgets/base_screen.dart';
+import 'package:template/core/common_widgets/buttons.dart';
+import 'package:template/core/router/app_routes.dart';
 
 class Page1 extends StatelessWidget {
   const Page1({super.key});

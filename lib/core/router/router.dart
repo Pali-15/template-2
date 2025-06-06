@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:template/common_widgets/bottom_navbar.dart';
-import 'package:template/router/app_routes.dart';
+import 'package:template/core/common_widgets/bottom_navbar.dart';
+import 'package:template/core/router/app_routes.dart';
 
 class AppRouter {
   final _rootNavigatorKey = GlobalKey<NavigatorState>();

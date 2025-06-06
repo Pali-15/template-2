@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:template/design/spacing.dart';
-import 'package:template/extensions/context_extensions/context_design_extension.dart';
+import 'package:template/core/design/spacing.dart';
+import 'package:template/core/extensions/context_extensions/context_design_extension.dart';
 
 class BasePage extends StatelessWidget {
   final Widget children;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:template/common_widgets/base_screen.dart';
-import 'package:template/design/spacing.dart';
-import 'package:template/design/theme/theme_cubit.dart';
-import 'package:template/extensions/context_extensions/context_design_extension.dart';
-import 'package:template/extensions/context_extensions/context_localization_extensions.dart';
-import 'package:template/extensions/locals_extension.dart';
-import 'package:template/l10n/locale_cubit.dart';
+import 'package:template/core/common_widgets/base_screen.dart';
+import 'package:template/core/design/spacing.dart';
+import 'package:template/core/design/theme/theme_cubit.dart';
+import 'package:template/core/extensions/context_extensions/context_design_extension.dart';
+import 'package:template/core/extensions/context_extensions/context_localization_extensions.dart';
+import 'package:template/core/extensions/locals_extension.dart';
+import 'package:template/core/l10n/locale_cubit.dart';
 
 class Page2 extends StatelessWidget {
   const Page2({super.key});

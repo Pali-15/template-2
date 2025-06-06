@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:template/design/app_colors.dart';
+import 'package:template/core/design/app_colors.dart';
 
 class AppTextStyles {
   final BuildContext context;
