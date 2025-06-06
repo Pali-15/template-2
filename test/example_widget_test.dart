@@ -2,9 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:template/core/router/app_routes.dart';
-import 'package:template/app/screens/page_1/page_1.dart';
-import 'package:template/app/screens/page_1/page_1_nested/bloc/bloc.dart';
-import 'package:template/app/screens/page_1/page_1_nested/page_1_nested.dart';
+import 'package:template/app/page_1/page_1.dart';
+import 'package:template/app/page_1_nested/bloc/bloc.dart';
+import 'package:template/app/page_1_nested/page_1_nested.dart';
 
 import 'mocks/bloc_mocks.mocks.dart';
 import 'mocks/router_mocks.mocks.dart';
