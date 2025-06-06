@@ -13,12 +13,12 @@ class AppErrorWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(Icons.error_outline_rounded),
-        SizedBox(height: AppSpacing.xxl.value),
+        SizedBox(height: AppSpacing.xxl.height),
         Text(
           "Oops something went wrong, please try again!",
           style: context.textStyles.subtitle,
         ),
-        SizedBox(height: AppSpacing.xxl.value),
+        SizedBox(height: AppSpacing.xxl.height),
         AppElevatedButton.primary(
           label: "Try again",
           onPressed: retry,

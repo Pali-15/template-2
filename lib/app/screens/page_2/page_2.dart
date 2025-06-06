@@ -28,7 +28,7 @@ class Page2 extends StatelessWidget {
                     onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
                   ),
             ),
-            SizedBox(height: AppSpacing.xs.value),
+            SizedBox(height: AppSpacing.xs.height),
             Text(
               'Switch to ${Theme.of(context).brightness == Brightness.dark ? "Light" : "Dark"} Theme',
               style: context.textStyles.subtitle,
@@ -44,12 +44,12 @@ class Page2 extends StatelessWidget {
                         ),
                   ),
             ),
-            SizedBox(height: AppSpacing.xs.value),
+            SizedBox(height: AppSpacing.xs.height),
             Text(
               'Switch to ${context.l10n.localeName == Locales.hu.languageCode ? "English" : "Hungarian"}',
               style: context.textStyles.subtitle,
             ),
-            SizedBox(height: AppSpacing.xs.value),
+            SizedBox(height: AppSpacing.xs.height),
             Text(
               "This is localized text: ${context.l10n.appTitle}",
               style: context.textStyles.subtitle,
