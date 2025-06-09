@@ -46,14 +46,11 @@ List<BlocProvider> _baseBlocProviders() {
   ];
 }
 
+// ignore: unused_element
 List<RepositoryProvider> _baseRepositories() {
   return [];
 
   // return [
-  //   RepositoryProvider<AnalyticsRepository>.value(value: DiModule.getInstance<AnalyticsRepository>()..init()),
-  //   RepositoryProvider<CrashlyticsRepository>.value(
-  //     value: DiModule.getInstance<CrashlyticsRepository>()..initializeCrashlytics(),
-  //   ),
-  //   RepositoryProvider<FirebaseMessagingRepository>.value(value: DiModule.getInstance<FirebaseMessagingRepository>()),
+  //   RepositoryProvider<Repository>.value(value: DiModule.getInstance<Repository>()),
   // ];
 }

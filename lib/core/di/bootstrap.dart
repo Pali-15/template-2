@@ -1,5 +1,6 @@
 import 'package:template/core/di/di_module.dart';
 import 'package:template/core/di_modules/locale_di_module.dart';
+import 'package:template/core/di_modules/page1_nested_di_module.dart';
 import 'package:template/core/di_modules/router_di_module.dart';
 import 'package:template/core/di_modules/theme_di_module.dart';
 
@@ -19,6 +20,7 @@ sealed class Bootstrap {
     List<DiModule> modules = [
       ThemeDiModule(),
       LocaleDiModule(),
+      Page1NestedDiModule(),
       RouterDiModule(),
     ];
 

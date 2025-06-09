@@ -1,47 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:template/app/page_1_nested/repository.dart';
+import 'package:template/core/design/app_dimensions.dart';
 import 'package:template/core/design/theme/theme_cubit.dart';
 import 'package:template/core/l10n/locale_cubit.dart';
+import 'package:template/core/router/app_router.dart';
 
-import 'mocks/bloc_mocks.mocks.dart';
-import 'mocks/router_mocks.mocks.dart';
-import 'utils/bloc_test_utils.dart';
+import 'mocks/mock_bloc.dart';
+import 'mocks/mock_repository.dart';
 
 extension PumpAppExtension on WidgetTester {
-  Future<void> pumpAppScreen(
-    Widget child, {
+  Future<void> testAppWrapper({
+    required AppRouter router,
     ThemeCubit? themeCubit,
     LocaleCubit? localeCubit,
-    GoRouter? router,
+    String? route,
+    Map<String, dynamic>? extra,
   }) async {
     final mockThemeCubit = MockThemeCubit();
     final mockLocaleCubit = MockLocaleCubit();
 
-    mockitoWhenListen(mockThemeCubit, initState: ThemeData.light());
-    mockitoWhenListen(
-      mockLocaleCubit,
-      initState: Locale(Locales.en.languageCode),
+    when(() => mockThemeCubit.state).thenReturn(ThemeMode.light);
+    when(
+      () => mockLocaleCubit.state,
+    ).thenReturn(Locale(Locales.en.languageCode));
+
+    Widget app = ScreenUtilInit(
+      designSize: Size(AppDimensions.DESIGN_WIDTH, AppDimensions.DESIGN_HEIGHT),
+      minTextAdapt: true,
+      builder:
+          (context, _) => MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'App',
+            routerConfig: router.router,
+          ),
     );
 
-    await pumpWidget(
-      InheritedGoRouter(
-        goRouter: router ?? MockGoRouter(),
-        child: MaterialApp(
-          home: MultiBlocProvider(
-            providers: [
-              BlocProvider<ThemeCubit>.value(
-                value: themeCubit ?? mockThemeCubit,
-              ),
-              BlocProvider<LocaleCubit>.value(
-                value: localeCubit ?? mockLocaleCubit,
-              ),
-            ],
-            child: child,
-          ),
-        ),
-      ),
-    );
+    await pumpWidget(app);
+    await pumpAndSettle();
+
+    if (route != null) {
+      var context = router.router.routerDelegate.navigatorKey.currentContext;
+      context?.go(route, extra: extra);
+    }
+    await pumpAndSettle();
   }
+}
+
+AppRouter buildMockRouter({Page1Repository? page1Repository}) {
+  return AppRouter(
+    builder: RoutesBuilder(),
+    page1Repository: page1Repository ?? MockPage1Repository(),
+  );
 }

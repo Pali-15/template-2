@@ -5,23 +5,27 @@ import 'package:provider/single_child_widget.dart';
 import 'package:template/app/page_1/page_1.dart';
 import 'package:template/app/page_1_nested/bloc/bloc.dart';
 import 'package:template/app/page_1_nested/page_1_nested.dart';
+import 'package:template/app/page_1_nested/repository.dart';
 import 'package:template/app/page_2/page_2.dart';
 import 'package:template/core/common_widgets/bottom_navbar.dart';
 import 'package:template/core/router/route_wrapper.dart';
 import 'package:template/core/router/routes.dart';
 
 class AppRouter {
+  // Dependencies
+  late final RoutesBuilder _builder;
+  late final Page1Repository _page1Repository;
   final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-  late final RoutesBuilder _builder;
   late final GoRouter _router;
-  late final String? _initialLocation;
 
   GoRouter get router => _router;
 
-  AppRouter(this._builder, [this._initialLocation]) {
+  AppRouter({required builder, required Page1Repository page1Repository})
+    : _builder = builder,
+      _page1Repository = page1Repository {
     _router = GoRouter(
-      initialLocation: _initialLocation ?? AppRoutes.page1,
+      initialLocation: AppRoutes.page1,
       navigatorKey: _rootNavigatorKey,
       debugLogDiagnostics: true,
       routes: <RouteBase>[
@@ -41,7 +45,10 @@ class AppRouter {
                       path: AppRoutes.page1Nested,
                       providers: [
                         BlocProvider<Page1Bloc>(
-                          create: (_) => Page1Bloc()..add(Page1BlocLoad()),
+                          create:
+                              (_) =>
+                                  Page1Bloc(_page1Repository)
+                                    ..add(Page1BlocLoad()),
                         ),
                       ],
                       builder: _builder.page1NestedBuilder,

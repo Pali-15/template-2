@@ -32,3 +32,9 @@ extension GoRouterExtension on GoRouter {
     },
   );
 }
+
+extension GoRouterStateExtension on GoRouterState {
+  Map<String, dynamic> get input {
+    return jsonDecode(uri.queryParameters[AppRoute.QUERY_INPUT_KEY]!);
+  }
+}
