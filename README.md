@@ -87,9 +87,9 @@ This project follows a clean, modular structure:
 
 | Layer               | Technology                       |
 |---------------------|----------------------------------|
-| Routing             | `go_router` + `go_router_builder`|
+| Routing             | `go_router`                      |
 | State Management    | `bloc`, `cubit`                  |
-| Dependency Injection| `RepositoryProvider/BlocProvider`|
+| Dependency Injection| `get_it/Providers`               |
 | Localization        | `l10n`                           |
 
 ---
@@ -98,71 +98,114 @@ This project follows a clean, modular structure:
 
 ```
 lib/
-├── assets_gen/     # Generated assets
-├── common_widgets/ # Commonly used widget
-├── dependencies/   # For global dependencies
-├── design/         # Colors, Spacing, Radius, Theme, Text Styles
-├── extensions/     # Commonly used extensions
-├── firebase/       # Firebase related files
-├── l10n/           # Localization
-├── router/         # All files related to routing
-├── screen/         # Screens and the corresponding blocs and repositories
-└── main.dart
+├── assets_gen/          # Generated assets
+├── app/                 # Application related code: screens, screen related Blocs and other buisness logic
+├── core/                # Global, not app related files
+├── core/common_widgets/ # Commonly used widget
+├── core/design/         # Colors, Spacing, Radius, Theme, Text Styles
+├── core/extensions/     # Commonly used extensions
+├── core/firebase/       # Firebase related files
+├── core/l10n/           # Localization
+├── core/router/         # All files related to routing
+├── core/di/             # Abstract di class, and bootstrapper file which will create the global dependencies
+├── core/di_modules      # All di modules file
 ```
 
 ---
 
 ## 🧩 Dependency Injection
-
-- For global dependency register it inside `dependencies/global_dependencies.dart`
-- If you would like to access it from the context, then add a new field inside the `GlobalDependenciesExtension`
-
-- The screens should NOT create their own dependencies
-- If a screen needs a dependency, then it is the responsibility of the corresponding GoRouteData class in the `app_routes.dart`
-
-```dart
-class Page1NestedRoute extends GoRouteData {
-  const Page1NestedRoute();
-
+- For global dependencies use get_it to register
+1. Create a `myrepository_di_module` file inside the `core/di_modules` folder. The class should extend from DiModule
+```Dart
+class LocaleDiModule extends DiModule {
   @override
-  Widget build(BuildContext context, GoRouterState state) => BlocProvider(
-        create: (context) => Page1Bloc()..add(Page1BlocLoad()),
-        child: const Page1Nested(),
-      );
+  void initializeModule(GetIt getIt) {
+    getIt.registerSingleton<LocaleCubit>(LocaleCubit(Locales.en.toLocale));
+  }
 }
 ```
+2. Add the di module to the `bootstrap` inside `core/di/bootstrap.dart`
+```Dart
+List<DiModule> modules = [
+      ThemeDiModule(),
+      LocaleDiModule(),
+      RouterDiModule(),
+    ];
+```
+It will register the dependencies in the given order, so if a di_module is depending on an other di_module make sure that it will be registered after it.
+
+- The blocs for the screens are registered during the routing. 
 
 ---
 
 ## 🧭 Routing
-- This Project uses Stateful routing with TypedRoutes
+- This Project uses Stateful routing with `go_router`
 - Create a new route:
-1. Create a new class which extends from the GoRouteData 
+1. Add the new route to the `routes.dart`. If it is a top level route use `/` prefix, if not then you should't use that prefix
+```Dart
+  static const page1 = "/page1";
+  static const page1Nested = "page1nested";
+```
+2. Add a new function to the `AppRoutes`
 ```dart
-class Page1Route extends GoRouteData {
-  const Page1Route();
+static AppRoute page1Route() => AppRoute._(AppRoutes.page1);
+```
+3. Add a builder function to the `RoutesBuilder` class
+```Dart
+  Widget page1Builder(BuildContext context, GoRouterState state) {
+    // If needed read params from routing here, and wrap the child with BlocProviders
+    return RouteWrapper(child: Page1());
+  }
+```
+- Here we can read the object passed to the routes with using `state.input` which is equal to
+```Dart
+Map<String, dynamic> get input {
+    return jsonDecode(uri.queryParameters[AppRoute.QUERY_INPUT_KEY]!);
+  }
+```
+- To have a nice developer experience, for every screen input create a model with freezed.
+```Dart
 
-  @override
-  Widget build(BuildContext context, GoRouterState state) => const Page1();
-}
+  Widget page1NestedBuilder(BuildContext context, GoRouterState state) {
+    final Page1NestedInput input = Page1NestedInput.fromJson(state.input);
+    return RouteWrapper(child: Page1Nested(input: input));
+  }
 ```
-2. If that is a top level route then, before creating the class define it to the router builder:
+4. In the `AppRouter` add the new route, either create a new branch or add a new barnch:
+In this example we define a top level route `page1` and a subroute `page1Nested` which uses a bloc
 ```dart
-@TypedGoRoute<Page2Route>(
-  path: '/page2',
-)
-```
-3. If it is a sub route, living inside a top level route, then define it like this:
-```dart
-@TypedGoRoute<Page1Route>(
-  path: '/page1',
-  routes: [
-    TypedGoRoute<Page1NestedRoute>(path: 'page1Nested'),
-  ],
-)
+StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: AppRoutes.page1,
+                  name: AppRoutes.page1,
+                  builder: _builder.page1Builder,
+                  routes: [
+                    routeWithBloc(
+                      path: AppRoutes.page1Nested,
+                      providers: [
+                        BlocProvider<Page1Bloc>(
+                          create: (_) => Page1Bloc()..add(Page1BlocLoad()),
+                        ),
+                      ],
+                      builder: _builder.page1NestedBuilder,
+                    ),
+                  ],
+                ),
+              ],
+            ),
 ```
 
-2. After this is done regenerate it with `build_runner`
+- Always use the extension method for routing so it will be compatible with `AppRoute` class. Find it here: `context_router_extensions.dart`
+```Dart
+onPressed: () {
+            context.navigate(AppRoute.page1NestedRoute(input: Page1NestedInput()));
+          },
+```
+### Dependency injection into the UI
+- If the page do not require any dependency then just add the builder function.
+- If the page do require any bloc then use the `routeWithBloc` function.
+- Use `routeWithInheritedBloc` if you want to provide the bloc to all of the subroutes
 
 ---
 
@@ -197,48 +240,100 @@ Assets.images.avatarPlaceholder.svg(),
 ```
 
 ---
+## 👨🏻‍💻 Create a new feature with bloc
+1. Create a repository which will handle all of the error and return a `Result` object
+```Dart
+class Page1Repository {
+  Result<List<String>> getData([bool throwError = false]) {
+    if (throwError) {
+      return ResultError<List<String>>('An error occurred');
+    }
+    return ResultData(List.generate(3, (index) => 'Item $index'));
+  }
+}
+```
+2. Define the bloc which will expect a repository, and handle the responses:
+```Dart
+class Page1Bloc extends Bloc<Page1BlocEvent, Page1BlocState> {
+  final Page1Repository _repository;
+  Page1Bloc(this._repository) : super(Page1BlocState.initial()) {
+    on<Page1BlocLoad>((event, emit) {
+      final data = _repository.getData();
+      if (data is ResultData<List<String>>) {
+        emit(Page1BlocState.loaded(data.value));
+      } else if (data is ResultError<List<String>>) {
+        emit(Page1BlocState.error(data.message));
+      }
+    });
+  }
+}
+```
+4. Register the Repository with a di_module
+```Dart
+// page1nested_di_module.dart
+class Page1NestedDiModule extends DiModule {
+  @override
+  void initializeModule(GetIt getIt) {
+    getIt.registerSingleton<Page1Repository>(Page1Repository());
+  }
+}
+
+// bootstrap.dart
+List<DiModule> modules = [
+  ThemeDiModule(),
+  LocaleDiModule(),
+  Page1NestedDiModule(),
+  RouterDiModule(),
+];
+```
+5. Since the bloc is using the repository we should inject it inside the router:
+```Dart
+// app_router.dart
+class AppRouter {
+  // Dependencies
+  late final RoutesBuilder _builder;
+  late final Page1Repository _page1Repository;
+  // Rest
+   AppRouter({required builder, required Page1Repository page1Repository})
+    : _builder = builder,
+      _page1Repository = page1Repository 
+}
+ // router_di_module.dart
+ class RouterDiModule extends DiModule {
+  @override
+  void initializeModule(GetIt getIt) {
+    getIt
+      ..registerSingleton(RoutesBuilder())
+      ..registerSingleton(
+        AppRouter(
+          builder: getIt<RoutesBuilder>(),
+          page1Repository: getIt<Page1Repository>(),
+        ),
+      );
+  }
+}
+```
+6. Update the `buildMockRouter` function inside the `test/test_extension.dart`:
+```Dart
+AppRouter buildMockRouter({Page1Repository? page1Repository}) {
+  return AppRouter(
+    builder: (context, state) => Container(),
+    page1Repository: page1Repository ?? MockPage1Repository(),
+  );
+}
+```
+7. Now just write the screen, and add the route
+
+This way in the tests you just have the mock the repository, and the bloc will work, and you can test the UI with the original bloc behaviour.
+---
 
 ## 🧪 Testing
 
 ### Mocking
-- Use generated mocks by `mockito`
-- In the `test/mocks` folder find the corresponding file or a create a new one
-- Define the new mock and generate it by the `build_runner`:
-```dart
-@GenerateNiceMocks([
-  MockSpec<MockObject>(),
-])
-export 'file_name_mock.mocks.dart';
-```
+- This project using `mocktail` for testing
+- Always use the `testAppWrapper` for testing.
+- See the example widget test, with the custom enviroment in the `example_widget_test.dart`
 
-### Writing widget tests
-- To mock bloc behavior use `mockitoWhenListen`:
-```dart
-mockitoWhenListen(mockPage1Bloc,
-        initState: Page1BlocStateLoaded(['Item 1', 'Item 2', 'Item 3']))
-```
-- To pump the screen to be tested use the `pumpAppScreen` extension function:
-```dart
-    await tester.pumpAppScreen(
-      BlocProvider<Page1Bloc>.value(
-        value: mockPage1Bloc,
-        child: const Page1Nested(),
-      ),
-    );
-```
-- In order to test the routing, create a mockRoute object and pass it:
-```dart
-    final router = MockGoRouter();
-
-    await tester.pumpAppScreen(
-      const Page1(),
-      router: router,
-    );
-```
-- Then verify the routing:
-```dart
-verify(router.go(const Page1NestedRoute().location)).called(1);
-```
 ### What to test?
 - Add tests for:
   - Widget rendering
@@ -255,6 +350,7 @@ verify(router.go(const Page1NestedRoute().location)).called(1);
 - Use `AppButtons` with factory constructors
 - Use `AppSpacing` for spacing and EdgeInsets
 - Use `AppRadius` instead of hard coded values
+- Always use `ScreenUtil`
 - Wrap pages with `BasePage`
 - Use `ErrorWidget` for displaying error messages
 - The colors, textstyles are avaliable from the context:
